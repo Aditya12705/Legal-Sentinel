@@ -544,10 +544,13 @@ textarea.input-area {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  height: 100svh; /* Support for dynamic mobile viewports */
   background: var(--bg-color);
   z-index: 10000;
-  display: none; /* Media Hub (Audit View) */
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .media-hub {
@@ -625,14 +628,14 @@ textarea.input-area {
   color: var(--primary);
 }
 
-.viewfinder {
+.lens-viewfinder {
   flex: 1;
   position: relative;
   overflow: hidden;
+  background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
 }
 
 #lens-video {
@@ -673,12 +676,13 @@ textarea.input-area {
 }
 
 .lens-controls {
-  padding: 2rem;
-  padding-bottom: calc(2rem + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  padding: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  background: rgba(15, 23, 42, 0.95);
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 10;
 }
 
 .capture-btn {
