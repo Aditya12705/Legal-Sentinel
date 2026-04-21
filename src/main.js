@@ -130,7 +130,7 @@ function initAudit() {
       renderAuditResults(resultsArea, result);
       saveToHistory('Audit', state.activeDocumentName || 'Pasted Text');
     } catch (e) {
-      renderAuditResults(resultsArea, "Connection lost.");
+      renderAuditResults(resultsArea, e.message);
     } finally {
       state.isScanning = false;
       runBtn.disabled = false;
@@ -470,7 +470,7 @@ function initChat() {
       botMsg.textContent = response;
       saveToHistory('Chat', userTextCopy || (pendingDocCopy ? pendingDocCopy.name : "Chat Message"));
     } catch (e) {
-      botMsg.textContent = "Error.";
+      botMsg.textContent = e.message;
     }
   };
 
@@ -532,7 +532,7 @@ function initDraft() {
       renderDraftResults(resultsArea, result);
       saveToHistory('Draft', `${type}: ${details.substring(0, 20)}...`);
     } catch (e) {
-      alert("Failed to generate draft.");
+      alert(`Sentinel Error: ${e.message}`);
     } finally {
       state.isScanning = false;
       draftBtn.disabled = false;
