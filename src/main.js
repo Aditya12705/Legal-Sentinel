@@ -205,6 +205,7 @@ async function captureSnapshot() {
 
 // 4. Sentinel Screen Scout (Real-Time Capture)
 function initScout() {
+  const stopBtn = document.querySelector('#stop-scout');
   const manualBtn = document.querySelector('#scout-capture-now');
   const doneBtn = document.querySelector('#scout-done');
   
@@ -484,7 +485,7 @@ function initChat() {
       if (pendingDocCopy) {
         prompt = `[FILE: ${pendingDocCopy.name}]\nContent: ${pendingDocCopy.text.substring(0, 3000)}\n\nQuestion: ${userTextCopy}`;
       }
-      const response = await invokeGemini31Pro(prompt);
+      const response = await invokeGemini31Pro(prompt, state.selectedLang);
       botMsg.textContent = response;
       saveToHistory('Chat', userTextCopy || (pendingDocCopy ? pendingDocCopy.name : "Chat Message"));
     } catch (e) {

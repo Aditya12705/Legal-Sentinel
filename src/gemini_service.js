@@ -22,7 +22,7 @@ function cleanMarkdown(text) {
 /**
  * Standard chat completion with Gemini 3.1 Pro (via Mistral)
  */
-export async function invokeGemini31Pro(prompt) {
+export async function invokeGemini31Pro(prompt, userLanguage = 'eng') {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s Timeout
 
