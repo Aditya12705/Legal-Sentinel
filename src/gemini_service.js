@@ -24,7 +24,7 @@ function cleanMarkdown(text) {
  */
 export async function invokeGemini31Pro(prompt, userLanguage = 'eng') {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s Timeout
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // Increased to 30s
 
   try {
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -85,7 +85,7 @@ export async function invokeGemini31Pro(prompt, userLanguage = 'eng') {
  */
 export async function auditContractWithGemini31(documentText, userLanguage = 'eng') {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 35000); // 35s for Deep Audits
+  const timeoutId = setTimeout(() => controller.abort(), 45000); // Increased to 45s for Deep Audits
 
   try {
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
