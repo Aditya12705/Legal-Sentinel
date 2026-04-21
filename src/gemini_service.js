@@ -29,10 +29,14 @@ export async function invokeGemini31Pro(prompt) {
   try {
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
     
+    const langMap = { 'eng': 'English', 'hin': 'Hindi', 'kan': 'Kannada', 'tam': 'Tamil', 'tel': 'Telugu', 'ben': 'Bengali' };
+    const langName = langMap[userLanguage] || 'English';
+
     const systemPrompt = `You are the Legal Sentinel Scout (Indian Law Expert).
     Current Date: ${today}.
-    STRICT JURISDICTION: You only provide advice based on INDIAN LAW (Consumer Protection Act 2019, BNS, etc.). 
-    DO NOT reference global or outside-India laws. Respond in user's language. Plaintext ONLY.`;
+    STRICT JURISDICTION: You only provide advice based on INDIAN LAW. 
+    STRICT LANGUAGE: You MUST respond ONLY in ${langName}.
+    DO NOT reference global laws. Plaintext ONLY.`;
 
     const response = await fetch(API_URL, {
       method: 'POST',

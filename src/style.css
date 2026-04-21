@@ -901,13 +901,15 @@ textarea.input-area {
   gap: 8px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 99px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  cursor: pointer;
+  cursor: pointer !important;
   transition: all 0.2s ease;
   user-select: none;
+  z-index: 9999 !important; /* Force to very front */
+  pointer-events: auto !important;
 }
 
 .lang-selector-pill:hover {
@@ -921,14 +923,13 @@ textarea.input-area {
   right: 0;
   width: 170px;
   padding: 8px;
-  z-index: 11000;
+  z-index: 100000; /* Force it to the very front */
   display: none;
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: rgba(15, 23, 42, 0.98);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--primary-glow);
   border-radius: var(--radius-md);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  animation: slideUp 0.2s ease;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
 }
 
 .lang-selector-pill.active .lang-dropdown {

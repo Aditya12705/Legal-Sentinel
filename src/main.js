@@ -219,6 +219,15 @@ async function startScout() {
   const feed = document.querySelector('#scout-text-stream');
 
   try {
+    // NATIVE BRIDGE CHECK (For APK build)
+    if (window.SentinelBridge) {
+        window.SentinelBridge.postMessage('startScout');
+        overlay.classList.add('active');
+        state.scoutBuffer.clear();
+        feed.innerHTML = `<p class="text-dim">Sentinel Native Vision Active. Scouring other apps...</p>`;
+        return; 
+    }
+
     const stream = await navigator.mediaDevices.getDisplayMedia({ 
       video: { cursor: 'always' } 
     });
@@ -609,3 +618,34 @@ function renderHistoryList(container) {
   `).join('');
   lucide.createIcons();
 }
+
+// 10. Native APK Bridge Receiver
+window.receiveScoutFrame = async (base64Data) => {
+    const feed = document.querySelector('#scout-text-stream');
+    if (!feed) return;
+
+    try {
+        state.isOCRPending = true;
+        // Convert base64 to File for existing parser
+        const res = await fetch(`data:image/png;base64,${base64Data}`);
+        const blob = await res.blob();
+        const file = new File([blob], "scout_frame.png", { type: "image/png" });
+
+        const text = await parseDocument(file, state.selectedLang);
+        
+        if (text && text.trim().length > 10) {
+            const cleanText = text.trim();
+            if (!state.scoutBuffer.has(cleanText)) {
+                state.scoutBuffer.add(cleanText);
+                const item = document.createElement('div');
+                item.className = 'feed-item';
+                item.textContent = cleanText.substring(0, 150) + "...";
+                feed.prepend(item);
+            }
+        }
+    } catch (err) {
+        console.error("Native Frame Error:", err);
+    } finally {
+        state.isOCRPending = false;
+    }
+};
