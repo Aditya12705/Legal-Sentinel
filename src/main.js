@@ -93,14 +93,20 @@ function initAudit() {
       state.activeDocumentText = text;
       
       scanOverlay.style.display = 'none';
-      if (isImage) {
-          const originalLabel = document.querySelector('#camera-trigger .media-label');
-          if (originalLabel) originalLabel.innerHTML = `<i data-lucide="check" style="width:14px; color:var(--safe);"></i> Scan Ready`;
-          lucide.createIcons();
-      } else {
-          const originalLabel = fileTrigger.querySelector('.media-label');
-          if (originalLabel) originalLabel.innerHTML = `<i data-lucide="check" style="width:14px; color:var(--safe);"></i> Document Loaded`;
-          lucide.createIcons();
+      
+      const preview = document.querySelector('#audit-file-preview');
+      if (preview) {
+        preview.style.display = 'block';
+        preview.innerHTML = `
+          <div class="glass-card" style="display: flex; align-items: center; gap: 12px; border: 1px solid var(--safe-glow); padding: 0.75rem 1rem; border-radius: var(--radius-sm);">
+            <i data-lucide="file-check" style="color: var(--safe); width: 20px;"></i>
+            <div style="flex: 1;">
+              <div style="font-size: 0.75rem; font-weight: 900; color: var(--safe); letter-spacing: 1px;">DOCUMENT READY</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary); width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${state.activeDocumentName}</div>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
       }
     } catch (err) {
       scanOverlay.style.display = 'none';
