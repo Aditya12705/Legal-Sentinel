@@ -29,7 +29,14 @@ export async function invokeGemini31Pro(prompt, userLanguage = 'eng') {
   try {
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
     
-    const langMap = { 'eng': 'English', 'hin': 'Hindi', 'kan': 'Kannada', 'tam': 'Tamil', 'tel': 'Telugu', 'ben': 'Bengali' };
+      const langMap = { 
+        'eng': 'English', 
+        'eng+hin': 'Hindi', 
+        'eng+kan': 'Kannada', 
+        'eng+tam': 'Tamil', 
+        'eng+tel': 'Telugu', 
+        'eng+ben': 'Bengali' 
+    };
     const langName = langMap[userLanguage] || 'English';
 
     const systemPrompt = `You are the Legal Sentinel Scout (Indian Law Expert).
@@ -84,7 +91,14 @@ export async function auditContractWithGemini31(documentText, userLanguage = 'en
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
     const safeText = documentText.substring(0, 25000);
     
-    const langMap = { 'eng': 'English', 'hin': 'Hindi', 'kan': 'Kannada', 'tam': 'Tamil', 'tel': 'Telugu', 'ben': 'Bengali' };
+      const langMap = { 
+        'eng': 'English', 
+        'eng+hin': 'Hindi', 
+        'eng+kan': 'Kannada', 
+        'eng+tam': 'Tamil', 
+        'eng+tel': 'Telugu', 
+        'eng+ben': 'Bengali' 
+    };
     const langName = langMap[userLanguage] || 'English';
 
     const systemPrompt = `You are the Legal Sentinel Audit Engine (3.1-PRO - INDIAN LAW CENTRIC).
@@ -153,7 +167,14 @@ export async function auditContractWithGemini31(documentText, userLanguage = 'en
 export async function generateLegalDraft(type, details, userLanguage = 'eng') {
   const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
   
-  const langMap = { 'eng': 'English', 'hin': 'Hindi', 'kan': 'Kannada', 'tam': 'Tamil', 'tel': 'Telugu', 'ben': 'Bengali' };
+    const langMap = { 
+        'eng': 'English', 
+        'eng+hin': 'Hindi', 
+        'eng+kan': 'Kannada', 
+        'eng+tam': 'Tamil', 
+        'eng+tel': 'Telugu', 
+        'eng+ben': 'Bengali' 
+    };
   const langName = langMap[userLanguage] || 'English';
 
   const systemPrompt = `You are a Senior Indian Legal Draftsman.
