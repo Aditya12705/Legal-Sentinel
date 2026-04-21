@@ -39,11 +39,13 @@ export async function invokeGemini31Pro(prompt, userLanguage = 'eng') {
     };
     const langName = langMap[userLanguage] || 'English';
 
+    // TRIPLE-LOCK PROMPT: Force the language instruction into the USER's view
+    const anchoredPrompt = `[SYSTEM MANDATE: RESPOND ONLY IN ${langName.toUpperCase()} USING NATIVE SCRIPT. DO NOT USE ANY OTHER LANGUAGE OR SCRIPT. ERROR IF TRANSGRESSION.]\n\n${prompt}`;
+
     const systemPrompt = `You are the Legal Sentinel Scout (Indian Law Expert).
     Current Date: ${today}.
     STRICT JURISDICTION: You only provide advice based on INDIAN LAW. 
-    STRICT LANGUAGE: You MUST respond ONLY in ${langName} using its NATIVE SCRIPT (e.g., Devanagari for Hindi). 
-    DO NOT use English/Latin script for Indian languages. Plaintext ONLY.`;
+    You are a professional legal auditor. Respond with authority and precision.`;
 
     const response = await fetch(API_URL, {
       method: 'POST',
@@ -53,12 +55,12 @@ export async function invokeGemini31Pro(prompt, userLanguage = 'eng') {
       },
       signal: controller.signal,
       body: JSON.stringify({
-        model: 'open-mistral-7b', // RESTORED FOR INSTANT SPEED
+        model: 'mistral-small-latest',
         messages: [
           { role: 'system', content: systemPrompt },
-          { role: 'user', content: prompt }
+          { role: 'user', content: anchoredPrompt }
         ],
-        temperature: 0.1
+        temperature: 0.0 // Set to 0 for absolute adherence to instructions
       })
     });
 
@@ -101,30 +103,13 @@ export async function auditContractWithGemini31(documentText, userLanguage = 'en
     };
     const langName = langMap[userLanguage] || 'English';
 
+    // ANCHORED AUDIT: Force language and script into the primary message
+    const anchoredAuditText = `[SYSTEM MANDATE: AUDIT ONLY IN ${langName.toUpperCase()} USING NATIVE SCRIPT. DO NOT USE ANY OTHER LANGUAGE.]\n\nDocument for Audit:\n${safeText}`;
+
     const systemPrompt = `You are the Legal Sentinel Audit Engine (3.1-PRO - INDIAN LAW CENTRIC).
     Current Date: ${today}.
     STRICT JURISDICTION: AUDIT ONLY BASED ON INDIAN STATUTES.
-    STRICT LANGUAGE: You MUST respond ONLY in ${langName} using its NATIVE SCRIPT (e.g., Devanagari for Hindi). 
-    DO NOT use English/Latin script for Indian languages.
-    
-    STRUCTURE YOUR RESPONSE EXACTLY LIKE THIS (USE CAPS FOR HEADERS):
-    
-    1. EXECUTIVE SUMMARY
-    Provide a professional summary.
-    
-    2. RED-FLAG HEATMAP
-    List individual risks and attach one of these tags: [HIGH], [MEDIUM], or [LOW].
-    Example: Clause 4.2 - Data Privacy: [HIGH]
-    
-    3. ACTIONABLE SUGGESTIONS
-    Provide 3-5 clear steps based on Indian legal procedures.
-    
-    4. LEGAL STANDING
-    Cite ONLY Indian laws or acts.
-    
-    STRICT RULES:
-    - NO MARKDOWN symbols (**, #, etc.).
-    - Use EXACT tags [HIGH], [MEDIUM], [LOW] for the heatmap.`;
+    You must identify risks and provide Indian legal standing for each.`;
     
     const response = await fetch(API_URL, {
       method: 'POST',
@@ -134,12 +119,12 @@ export async function auditContractWithGemini31(documentText, userLanguage = 'en
       },
       signal: controller.signal,
       body: JSON.stringify({
-        model: 'mistral-small-latest', // Pivoted to confirmed working tier
+        model: 'mistral-small-latest',
         messages: [
           { role: 'system', content: systemPrompt },
-          { role: 'user', content: safeText }
+          { role: 'user', content: anchoredAuditText }
         ],
-        temperature: 0.1
+        temperature: 0.0
       })
     });
 
@@ -177,18 +162,14 @@ export async function generateLegalDraft(type, details, userLanguage = 'eng') {
     };
   const langName = langMap[userLanguage] || 'English';
 
+  const anchoredDraftDetails = `[SYSTEM MANDATE: DRAFT ONLY IN ${langName.toUpperCase()} USING NATIVE SCRIPT. DO NOT USE ANY OTHER LANGUAGE.]\n\nDraft Type: ${type}\nDetails: ${details}`;
+
   const systemPrompt = `You are a Senior Indian Legal Draftsman.
   Today's Date: ${today}.
   STRICT JURISDICTION: DRAFT ONLY BASED ON INDIAN LEGAL FORMATS.
-  STRICT LANGUAGE: You MUST respond ONLY in ${langName} using its NATIVE SCRIPT. 
-  DO NOT use English/Latin script for Indian languages.
   
-  STRICT RULES:
-  - NO MARKDOWN.
-  - USE PROFESSIONALLY FORMATTED PLAINTEXT.
-  - Include placeholders like [USER NAME] or [DATE: ${today}] where appropriate.
-  Generate a professional Indian legal ${type} based on the user's details.
-  Tone: Formal, authoritative, and 100% Indian Law centric.`;
+  Generate a professional Indian legal document in regional script.
+  STRICT RULES: NO MARKDOWN. FORMATTED PLAINTEXT.`;
 
   const response = await fetch(API_URL, {
     method: 'POST',
@@ -197,11 +178,12 @@ export async function generateLegalDraft(type, details, userLanguage = 'eng') {
       'Authorization': `Bearer ${MISTRAL_API_KEY}`
     },
     body: JSON.stringify({
-      model: 'mistral-large-latest',
+      model: 'mistral-small-latest',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: details }
-      ]
+        { role: 'user', content: anchoredDraftDetails }
+      ],
+      temperature: 0.0
     })
   });
 
