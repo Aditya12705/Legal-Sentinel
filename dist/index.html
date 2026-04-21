@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Sentinel | Your Personal Legal Scout</title>
+    <meta name="description" content="Simple, elegant legal auditing for everyone. Protect your rights with local AI." />
+    <!-- Lucide Icons for a clean, professional look -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module" crossorigin src="/assets/index-ecg2kzQV.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-D2bqHsXU.css">
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <header class="container" style="padding-top: 2rem; padding-bottom: 1rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="/logo.png" style="width: 32px; height: 32px;" alt="Sentinel Logo" />
+            <h2 style="font-size: 1.5rem; margin: 0;">Sentinel</h2>
+          </div>
+          <div class="pulse-circle"></div>
+        </div>
+      </header>
+
+      <!-- View Container -->
+      <main id="view-container" class="container">
+        
+        <!-- HOME VIEW -->
+        <section id="home" class="view active">
+          <h1 class="hero-title" style="font-size: 2.5rem; margin-bottom: 1rem;">Peace of Mind, <br><span class="text-gradient">One Scan Away.</span></h1>
+          <p class="text-secondary" style="margin-bottom: 2rem;">Sentinel is your friendly Legal Scout. We find red flags in your contracts so you don't have to worry.</p>
+          
+          <div class="glass-card">
+            <h3 style="margin-bottom: 0.5rem;">Quick Audit</h3>
+            <p class="text-secondary" style="font-size: 0.9rem; margin-bottom: 1.5rem;">Have a contract? Upload it or paste the text and I'll find what's hidden.</p>
+            <button class="btn-primary" onclick="window.location.hash='#audit'">
+              <i data-lucide="shield-check"></i> Check My Terms
+            </button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="glass-card" style="padding: 1rem; margin-bottom: 0;">
+              <i data-lucide="message-square" style="color: var(--primary); margin-bottom: 0.5rem;"></i>
+              <h4 style="font-size: 0.9rem;">Ask Questions</h4>
+            </div>
+            <div class="glass-card" style="padding: 1rem; margin-bottom: 0;">
+              <i data-lucide="file-text" style="color: var(--primary); margin-bottom: 0.5rem;"></i>
+              <h4 style="font-size: 0.9rem;">Create Docs</h4>
+            </div>
+          </div>
+        </section>
+
+        <!-- AUDIT VIEW -->
+        <section id="audit" class="view">
+          <h2 style="margin-bottom: 1rem;">Legal Auditor</h2>
+          <p class="text-secondary" style="margin-bottom: 2rem;">Upload your PDF or paste the text. I'll highlight the "Fine Print" traps.</p>
+          
+          <div class="glass-card" id="drop-zone" style="text-align: center; border: 2px dashed rgba(255,255,255,0.1); padding: 3rem 1.5rem;">
+            <i data-lucide="upload-cloud" style="width: 40px; height: 40px; color: var(--primary); margin-bottom: 1rem;"></i>
+            <p style="font-weight: 600;">Tap to Upload PDF/Doc</p>
+            <p class="text-dim" style="font-size: 0.8rem;">Maximum file size 10MB</p>
+          </div>
+
+          <p class="text-dim mono" style="text-align: center; margin-bottom: 1.5rem;">- OR -</p>
+          
+          <textarea class="input-area" placeholder="Paste legal text or EULA here..."></textarea>
+          <button class="btn-primary" id="run-audit">
+            <i data-lucide="scan-search"></i> Run Legal Audit
+          </button>
+          
+          <div id="audit-results" style="margin-top: 2rem; display: none;">
+             <!-- Dynamic Audit Insights -->
+          </div>
+        </section>
+
+        <!-- CHAT VIEW -->
+        <section id="chat" class="view">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+            <i data-lucide="bot" style="color: var(--primary);"></i>
+            <h2 style="margin: 0;">Legal Scout</h2>
+          </div>
+          <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+              <div class="msg msg-bot">Hi! I'm your Legal Scout. Upload a document or just ask me anything about your consumer rights!</div>
+            </div>
+            <div style="display: flex; gap: 10px; padding-top: 1rem;">
+              <input type="text" class="input-area" style="margin-bottom: 0;" placeholder="Ask a question...">
+              <button class="btn-primary" style="width: auto; padding: 0 1.5rem;">
+                 <i data-lucide="send"></i>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- DRAFT VIEW -->
+        <section id="draft" class="view">
+          <h2 style="margin-bottom: 1rem;">Doc Generator</h2>
+          <p class="text-secondary" style="margin-bottom: 2rem;">Need to dispute a fee or cancel a subscription? I'll draft it for you.</p>
+          
+          <div class="glass-card">
+            <label class="text-secondary" style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem;">What are you making?</label>
+            <select class="input-area">
+              <option>Subscription Cancellation</option>
+              <option>Fee Dispute Letter</option>
+              <option>Privacy Data Request</option>
+              <option>Custom Defense Letter</option>
+            </select>
+            
+            <label class="text-secondary" style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem;">Key Details (e.g., Company Name)</label>
+            <textarea class="input-area" style="min-height: 80px;" placeholder="What company is this for? Any specific fee amount?"></textarea>
+            
+            <button class="btn-primary">
+              <i data-lucide="pen-tool"></i> Draft Document
+            </button>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Nav -->
+      <nav class="bottom-nav">
+        <a href="#home" class="nav-item active">
+          <i data-lucide="home"></i>
+          <span>Home</span>
+        </a>
+        <a href="#audit" class="nav-item">
+          <i data-lucide="shield-search"></i>
+          <span>Audit</span>
+        </a>
+        <a href="#chat" class="nav-item">
+          <i data-lucide="message-circle"></i>
+          <span>Chat</span>
+        </a>
+        <a href="#draft" class="nav-item">
+          <i data-lucide="file-plus"></i>
+          <span>Draft</span>
+        </a>
+      </nav>
+
+    </div>
+  </body>
+</html>
