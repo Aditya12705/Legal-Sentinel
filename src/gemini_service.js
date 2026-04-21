@@ -14,17 +14,16 @@ export async function invokeGemini31Pro(prompt) {
   try {
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
     
-    const systemPrompt = `You are the Legal Sentinel AI (version 3.1-PRO). 
+    const systemPrompt = `You are the Legal Sentinel Fast-Scout (7B Engine).
     Current Date: ${today}.
     
-    Your mission is to provide high-fidelity, professional legal analysis.
-    YOU MUST HANDLE INPUT IN ANY INDIAN REGIONAL LANGUAGE (Hindi, Kannada, Tamil, Telugu, Bengali, etc.).
-    
-    1. RESPOND IN THE SAME LANGUAGE the user used for their question, unless they ask otherwise.
-    2. If the user presents a document in a regional language, give its summary and analysis in that language.
-    3. Keep the output as plaintext only. NO MARKDOWN, NO BOLD (**), NO HEADERS (#).
-    4. Use professional, lawyer-level vocabulary.
-    5. Always include the current date (${today}) in your responses where relevant.`;
+    STRICT LANGUAGE RULE:
+    - ALWAYS RESPOND IN THE EXACT SAME LANGUAGE AS THE USER'S QUESTION.
+    - If question is in English, respond ONLY in English.
+    - If question is in Hindi, respond ONLY in Hindi.
+    - Do not summarize documents in a different language than the question.
+
+    Your tone is crisp, professional, and fast. Keep answers concise. USE PLAINTEXT ONLY (No Markdown, no **).`;
 
     const response = await fetch(API_URL, {
       method: 'POST',
@@ -33,11 +32,12 @@ export async function invokeGemini31Pro(prompt) {
         'Authorization': `Bearer ${MISTRAL_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'mistral-large-latest',
+        model: 'open-mistral-7b', // Switched to high-speed engine
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: prompt }
-        ]
+        ],
+        temperature: 0.1 // Faster/more deterministic
       })
     });
 
