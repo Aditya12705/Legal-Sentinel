@@ -3,7 +3,8 @@
  * Interfaces with the Mistral API (Gemini 3.1 Pro Proxy) for high-fidelity legal analysis.
  */
 
-const MISTRAL_API_KEY = 'MISTRAL_API_KEY'; // User should provide this via env in production
+// Use Vite's environment variable system for production (requires VITE_ prefix in Vercel)
+const MISTRAL_API_KEY = import.meta.env.VITE_MISTRAL_API_KEY || 'YOUR_LOCAL_KEY_HERE';
 const API_URL = 'https://api.mistral.ai/v1/chat/completions';
 
 /**
