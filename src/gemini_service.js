@@ -29,9 +29,10 @@ export async function invokeGemini31Pro(prompt) {
   try {
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
     
-    const systemPrompt = `You are the Legal Sentinel Scout (V3.1 Small-Core).
+    const systemPrompt = `You are the Legal Sentinel Scout (Indian Law Expert).
     Current Date: ${today}.
-    Respond in the language of the user's question. Clear plaintext only.`;
+    STRICT JURISDICTION: You only provide advice based on INDIAN LAW (Consumer Protection Act 2019, BNS, etc.). 
+    DO NOT reference global or outside-India laws. Respond in user's language. Plaintext ONLY.`;
 
     const response = await fetch(API_URL, {
       method: 'POST',
@@ -79,8 +80,10 @@ export async function auditContractWithGemini31(documentText) {
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
     const safeText = documentText.substring(0, 25000);
 
-    const systemPrompt = `You are the Legal Sentinel Audit Engine (3.1-PRO).
+    const systemPrompt = `You are the Legal Sentinel Audit Engine (3.1-PRO - INDIAN LAW CENTRIC).
     Current Date: ${today}.
+    STRICT JURISDICTION: AUDIT ONLY BASED ON INDIAN STATUTES (Contract Act, BNS, Consumer Rights).
+    DO NOT reference global laws.
     
     STRUCTURE YOUR RESPONSE EXACTLY LIKE THIS (USE CAPS FOR HEADERS):
     
@@ -92,10 +95,10 @@ export async function auditContractWithGemini31(documentText) {
     Example: Clause 4.2 - Data Privacy: [HIGH]
     
     3. ACTIONABLE SUGGESTIONS
-    Provide 3-5 clear steps the user must take.
+    Provide 3-5 clear steps based on Indian legal procedures.
     
     4. LEGAL STANDING
-    Cite relevant Indian or Global laws.
+    Cite ONLY Indian laws or acts.
     
     STRICT RULES:
     - NO MARKDOWN symbols (**, #, etc.).
@@ -142,17 +145,17 @@ export async function auditContractWithGemini31(documentText) {
 export async function generateLegalDraft(type, details) {
   const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
   
-  const systemPrompt = `You are a Senior Legal Draftsman.
+  const systemPrompt = `You are a Senior Indian Legal Draftsman.
   Today's Date: ${today}.
+  STRICT JURISDICTION: DRAFT ONLY BASED ON INDIAN LEGAL FORMATS.
   
-  Generate a professional legal ${type} based on the user's details.
-  THE DRAFT CAN BE IN ENGLISH OR A REGIONAL INDIAN LANGUAGE as requested by the user.
+  Generate a professional Indian legal ${type} based on the user's details.
   
   STRICT RULES:
   - NO MARKDOWN.
   - USE PROFESSIONALLY FORMATTED PLAINTEXT.
   - Include placeholders like [USER NAME] or [DATE: ${today}] where appropriate.
-  - The tone must be formal and authoritative.`;
+  - Tone: Formal, authoritative, and 100% Indian Law centric.`;
 
   const response = await fetch(API_URL, {
     method: 'POST',
