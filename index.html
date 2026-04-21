@@ -221,29 +221,48 @@
        <div id="ocr-progress" style="margin-top: 2rem; font-weight: 800; color: var(--primary);">Analyzing traps...</div>
     </div>
 
-    <!-- Scout Overlay -->
-    <div id="scout-overlay" class="overlay">
-        <div class="scout-header">
-           <div class="scout-status"><div class="status-light"></div><div class="status-text">SENTINEL LIVE VISION</div></div>
-           <div class="scout-actions">
-              <button id="scout-capture-now" class="btn-harvest"><i data-lucide="zap"></i> Harvest</button>
-              <button id="stop-scout" class="btn-finish">Finish Audit</button>
-           </div>
-        </div>
-        <div class="scout-preview-container"><video id="scout-video" autoplay playsinline></video></div>
-        <div class="scout-feed"><div class="feed-header">HARVESTED DATA</div><div id="scout-text-stream" class="feed-content"><p class="text-dim">Watching legal terms...</p></div></div>
-    </div>
 
     <!-- Lens Overlay -->
     <div id="lens-overlay" class="overlay">
       <div class="lens-header">
-        <div class="tag tag-primary">VIEWPORT ACTIVE</div>
+        <div style="display: flex; flex-direction: column;">
+          <div style="font-size: 0.6rem; color: var(--primary); font-weight: 900; letter-spacing: 2px;">LENS CORE V3.1</div>
+          <div style="font-size: 1rem; font-weight: 700; color: #fff;">SENTINEL VISION ACTIVE</div>
+        </div>
         <button id="close-lens" class="icon-btn"><i data-lucide="x"></i></button>
       </div>
-      <div class="lens-viewfinder"><video id="lens-video" autoplay playsinline></video><div class="laser-line"></div></div>
-      <div class="lens-controls">
-         <button id="capture-snapshot" class="btn-primary" style="width: 60px; height: 60px; border-radius: 50%; padding: 0;"><i data-lucide="camera"></i></button>
+      <div class="lens-viewfinder">
+        <video id="lens-video" autoplay playsinline></video>
+        <div class="laser-line"></div>
       </div>
+      <div class="lens-controls">
+         <button id="capture-snapshot" class="btn-primary" style="width: auto; padding: 1rem 2rem; border-radius: 99px;">
+           <i data-lucide="scan-line" class="pulse"></i> CAPTURE & AUDIT NOW
+         </button>
+      </div>
+    </div>
+
+    <!-- Scout Overlay (Screen Scan Engine) -->
+    <div id="scout-overlay" class="overlay">
+        <div class="lens-header" style="background: rgba(15, 23, 42, 0.95);">
+           <div>
+             <div style="font-size: 0.6rem; color: var(--accent); font-weight: 900; letter-spacing: 2px;">SCOUT ENGINE 7B</div>
+             <div style="font-size: 1rem; font-weight: 700; color: #fff;">HARVESTING ENGINE ACTIVE</div>
+           </div>
+           <button id="stop-scout" class="icon-btn" style="color: var(--danger);"><i data-lucide="square"></i></button>
+        </div>
+        <div class="scout-preview-container" style="height: 140px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <video id="scout-video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+        </div>
+        <div id="scout-text-stream" style="flex: 1; padding: 1rem; font-family: monospace; font-size: 0.7rem; overflow-y: auto; background: rgba(0,0,0,0.4);">
+           <p class="text-dim">Sentinel is watching for legal terms...</p>
+        </div>
+        <div class="lens-controls" style="display: flex; gap: 10px; background: rgba(15, 23, 42, 0.95);">
+           <button id="scout-capture-now" class="btn-secondary" style="flex: 1;"><i data-lucide="zap"></i> HARVEST NOW</button>
+           <button id="scout-done" class="btn-primary" style="flex: 2;">
+             <i data-lucide="shield-check"></i> FINISH & AUDIT
+           </button>
+        </div>
     </div>
 
     <!-- History Overlay -->

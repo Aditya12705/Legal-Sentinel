@@ -193,20 +193,24 @@ async function captureSnapshot() {
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
   const ctx = canvas.getContext('2d');
-  ctx.drawImage(video, 0, 0);
-  canvas.toBlob((blob) => {
-    stopLens();
-    window.handleFile(blob);
-  }, 'image/png');
+    canvas.toBlob((blob) => {
+      stopLens();
+      window.handleFile(blob).then(() => {
+          // AUTO-AUDIT TRIGGER
+          const runBtn = document.querySelector('#run-audit');
+          if (runBtn) runBtn.click();
+      });
+    }, 'image/png');
 }
 
 // 4. Sentinel Screen Scout (Real-Time Capture)
 function initScout() {
-  const stopBtn = document.querySelector('#stop-scout');
   const manualBtn = document.querySelector('#scout-capture-now');
+  const doneBtn = document.querySelector('#scout-done');
   
   if (stopBtn) stopBtn.onclick = finishScout;
   if (manualBtn) manualBtn.onclick = () => scoutSamplingLoop(true);
+  if (doneBtn) doneBtn.onclick = finishScout;
 }
 
 async function startScout() {
@@ -300,8 +304,13 @@ function finishScout() {
     window.location.hash = '#audit';
     setTimeout(() => {
         const runBtn = document.querySelector('#run-audit');
-        if (runBtn) runBtn.click();
-    }, 100);
+        if (runBtn) {
+            runBtn.click();
+            // Clear the preview to show the audit progress
+            const preview = document.querySelector('#audit-file-preview');
+            if (preview) preview.style.display = 'none';
+        }
+    }, 300);
 
   } else {
     alert("Sentinel Vision failed: No legal text captured. Try scrolling slower or using 'Harvest Now'.");
