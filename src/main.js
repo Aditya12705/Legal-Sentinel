@@ -126,7 +126,7 @@ function initAudit() {
     state.isScanning = true;
 
     try {
-      const result = await auditContractWithGemini31(text);
+      const result = await auditContractWithGemini31(text, state.selectedLang);
       renderAuditResults(resultsArea, result);
       saveToHistory('Audit', state.activeDocumentName || 'Pasted Text');
     } catch (e) {
@@ -547,7 +547,7 @@ function initDraft() {
     state.isScanning = true;
 
     try {
-      const result = await generateLegalDraft(type, details);
+      const result = await generateLegalDraft(type, details, state.selectedLang);
       renderDraftResults(resultsArea, result);
       saveToHistory('Draft', `${type}: ${details.substring(0, 20)}...`);
     } catch (e) {

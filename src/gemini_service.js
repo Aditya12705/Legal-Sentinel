@@ -35,8 +35,8 @@ export async function invokeGemini31Pro(prompt, userLanguage = 'eng') {
     const systemPrompt = `You are the Legal Sentinel Scout (Indian Law Expert).
     Current Date: ${today}.
     STRICT JURISDICTION: You only provide advice based on INDIAN LAW. 
-    STRICT LANGUAGE: You MUST respond ONLY in ${langName}.
-    DO NOT reference global laws. Plaintext ONLY.`;
+    STRICT LANGUAGE: You MUST respond ONLY in ${langName} using its NATIVE SCRIPT (e.g., Devanagari for Hindi). 
+    DO NOT use English/Latin script for Indian languages. Plaintext ONLY.`;
 
     const response = await fetch(API_URL, {
       method: 'POST',
@@ -76,18 +76,22 @@ export async function invokeGemini31Pro(prompt, userLanguage = 'eng') {
  * Performs a deep audit of a legal document.
  * Returns an Executive Summary, Red-Flag Heatmap, and Actionable Suggestions.
  */
-export async function auditContractWithGemini31(documentText) {
+export async function auditContractWithGemini31(documentText, userLanguage = 'eng') {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 35000); // 35s for Deep Audits
 
   try {
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
     const safeText = documentText.substring(0, 25000);
+    
+    const langMap = { 'eng': 'English', 'hin': 'Hindi', 'kan': 'Kannada', 'tam': 'Tamil', 'tel': 'Telugu', 'ben': 'Bengali' };
+    const langName = langMap[userLanguage] || 'English';
 
     const systemPrompt = `You are the Legal Sentinel Audit Engine (3.1-PRO - INDIAN LAW CENTRIC).
     Current Date: ${today}.
-    STRICT JURISDICTION: AUDIT ONLY BASED ON INDIAN STATUTES (Contract Act, BNS, Consumer Rights).
-    DO NOT reference global laws.
+    STRICT JURISDICTION: AUDIT ONLY BASED ON INDIAN STATUTES.
+    STRICT LANGUAGE: You MUST respond ONLY in ${langName} using its NATIVE SCRIPT (e.g., Devanagari for Hindi). 
+    DO NOT use English/Latin script for Indian languages.
     
     STRUCTURE YOUR RESPONSE EXACTLY LIKE THIS (USE CAPS FOR HEADERS):
     
@@ -107,7 +111,7 @@ export async function auditContractWithGemini31(documentText) {
     STRICT RULES:
     - NO MARKDOWN symbols (**, #, etc.).
     - Use EXACT tags [HIGH], [MEDIUM], [LOW] for the heatmap.`;
-
+    
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
@@ -146,20 +150,24 @@ export async function auditContractWithGemini31(documentText) {
 /**
  * Generates a legal draft (e.g. eviction notice, refund dispute).
  */
-export async function generateLegalDraft(type, details) {
+export async function generateLegalDraft(type, details, userLanguage = 'eng') {
   const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
   
+  const langMap = { 'eng': 'English', 'hin': 'Hindi', 'kan': 'Kannada', 'tam': 'Tamil', 'tel': 'Telugu', 'ben': 'Bengali' };
+  const langName = langMap[userLanguage] || 'English';
+
   const systemPrompt = `You are a Senior Indian Legal Draftsman.
   Today's Date: ${today}.
   STRICT JURISDICTION: DRAFT ONLY BASED ON INDIAN LEGAL FORMATS.
-  
-  Generate a professional Indian legal ${type} based on the user's details.
+  STRICT LANGUAGE: You MUST respond ONLY in ${langName} using its NATIVE SCRIPT. 
+  DO NOT use English/Latin script for Indian languages.
   
   STRICT RULES:
   - NO MARKDOWN.
   - USE PROFESSIONALLY FORMATTED PLAINTEXT.
   - Include placeholders like [USER NAME] or [DATE: ${today}] where appropriate.
-  - Tone: Formal, authoritative, and 100% Indian Law centric.`;
+  Generate a professional Indian legal ${type} based on the user's details.
+  Tone: Formal, authoritative, and 100% Indian Law centric.`;
 
   const response = await fetch(API_URL, {
     method: 'POST',
