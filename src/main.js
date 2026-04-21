@@ -143,9 +143,9 @@ function initAudit() {
 function renderAuditResults(container, rawResult) {
   container.style.display = 'block';
   const formattedMsg = rawResult
-    .replace(/(HIGH|CRITICAL)/g, '<span class="heatmap-tag h-high">$1</span>')
-    .replace(/(MEDIUM|WARNING)/g, '<span class="heatmap-tag h-med">$1</span>')
-    .replace(/(LOW|SAFE|CLEAN)/g, '<span class="heatmap-tag h-low">$1</span>');
+    .replace(/\[?(HIGH|CRITICAL)\]?/gi, '<span class="heatmap-tag h-high">HIGH RISK</span>')
+    .replace(/\[?(MEDIUM|WARNING)\]?/gi, '<span class="heatmap-tag h-med">MEDIUM RISK</span>')
+    .replace(/\[?(LOW|SAFE|CLEAN)\]?/gi, '<span class="heatmap-tag h-low">LOW RISK</span>');
 
   container.innerHTML = `
     <div class="glass-card insight-card danger">

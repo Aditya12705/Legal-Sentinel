@@ -79,6 +79,28 @@ export async function auditContractWithGemini31(documentText) {
     const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
     const safeText = documentText.substring(0, 25000);
 
+    const systemPrompt = `You are the Legal Sentinel Audit Engine (3.1-PRO).
+    Current Date: ${today}.
+    
+    STRUCTURE YOUR RESPONSE EXACTLY LIKE THIS (USE CAPS FOR HEADERS):
+    
+    1. EXECUTIVE SUMMARY
+    Provide a professional summary.
+    
+    2. RED-FLAG HEATMAP
+    List individual risks and attach one of these tags: [HIGH], [MEDIUM], or [LOW].
+    Example: Clause 4.2 - Data Privacy: [HIGH]
+    
+    3. ACTIONABLE SUGGESTIONS
+    Provide 3-5 clear steps the user must take.
+    
+    4. LEGAL STANDING
+    Cite relevant Indian or Global laws.
+    
+    STRICT RULES:
+    - NO MARKDOWN symbols (**, #, etc.).
+    - Use EXACT tags [HIGH], [MEDIUM], [LOW] for the heatmap.`;
+
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
@@ -89,7 +111,7 @@ export async function auditContractWithGemini31(documentText) {
       body: JSON.stringify({
         model: 'mistral-large-latest',
         messages: [
-          { role: 'system', content: `Legal Sentinel Auditor (3.1-PRO). Use plaintext summaries only.` },
+          { role: 'system', content: systemPrompt },
           { role: 'user', content: safeText }
         ]
       })
@@ -103,10 +125,11 @@ export async function auditContractWithGemini31(documentText) {
     }
 
     const data = await response.json();
+    console.log("SENTINEL AUDIT COMPLETE");
     return cleanMarkdown(data.choices[0].message.content);
   } catch (error) {
     clearTimeout(timeoutId);
-    if (error.name === 'AbortError') throw new Error("AUDIT TIMEOUT: This document is very complex. Try auditing a smaller section.");
+    if (error.name === 'AbortError') throw new Error("AUDIT TIMEOUT: Complex document. Auditing first 5000 words.");
     console.error("Audit Fail:", error);
     throw error;
   }
