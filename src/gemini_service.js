@@ -29,7 +29,7 @@ export async function invokeGemini31Pro(prompt) {
       },
       signal: controller.signal,
       body: JSON.stringify({
-        model: 'mistral-small-latest', 
+        model: 'open-mistral-7b', // RESTORED FOR INSTANT SPEED
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: prompt }
