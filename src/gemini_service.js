@@ -3,9 +3,21 @@
  * Interfaces with the Mistral API (Gemini 3.1 Pro Proxy) for high-fidelity legal analysis.
  */
 
-// Use Vite's environment variable system for production (requires VITE_ prefix in Vercel)
 const MISTRAL_API_KEY = import.meta.env.VITE_MISTRAL_API_KEY || 'YOUR_LOCAL_KEY_HERE';
 const API_URL = 'https://api.mistral.ai/v1/chat/completions';
+
+/**
+ * Sanitizes Markdown artifacts to keep output professional and clean.
+ */
+function cleanMarkdown(text) {
+  return text
+    .replace(/\*\*/g, '')   // Remove Bold
+    .replace(/\* /g, '• ') // Convert bullet points to dots
+    .replace(/#/g, '')      // Remove Headers
+    .replace(/__/g, '')     // Remove Underscores
+    .replace(/`/g, '')      // Remove Backticks
+    .trim();
+}
 
 /**
  * Standard chat completion with Gemini 3.1 Pro (via Mistral)
@@ -46,7 +58,7 @@ export async function invokeGemini31Pro(prompt) {
     }
 
     const data = await response.json();
-    return data.choices[0].message.content;
+    return cleanMarkdown(data.choices[0].message.content);
   } catch (error) {
     clearTimeout(timeoutId);
     if (error.name === 'AbortError') throw new Error("SENTINEL TIMEOUT: The AI took too long to respond. Please try a shorter question.");
@@ -91,7 +103,7 @@ export async function auditContractWithGemini31(documentText) {
     }
 
     const data = await response.json();
-    return data.choices[0].message.content;
+    return cleanMarkdown(data.choices[0].message.content);
   } catch (error) {
     clearTimeout(timeoutId);
     if (error.name === 'AbortError') throw new Error("AUDIT TIMEOUT: This document is very complex. Try auditing a smaller section.");
@@ -134,5 +146,5 @@ export async function generateLegalDraft(type, details) {
   });
 
   const data = await response.json();
-  return data.choices[0].message.content;
+  return cleanMarkdown(data.choices[0].message.content);
 }

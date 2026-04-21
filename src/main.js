@@ -121,7 +121,7 @@ function initAudit() {
     if (!text || state.isScanning) return;
     
     runBtn.disabled = true;
-    runBtn.innerHTML = `<i class="pulse" data-lucide="loader-2"></i> Sentinel is auditing risk...`;
+    runBtn.innerHTML = `<i class="pulse" data-lucide="loader-2"></i> <span class="typing-dots">Sentinel is auditing risk</span>`;
     lucide.createIcons();
     state.isScanning = true;
 
@@ -458,7 +458,8 @@ function initChat() {
     attachmentPreview.style.display = 'none';
     state.pendingChatDoc = null;
 
-    const botMsg = addMessage('bot', 'Sentinel is typing...');
+    const botMsg = addMessage('bot', '');
+    botMsg.innerHTML = `<span class="typing-dots">Sentinel is typing</span>`;
     
     try {
       let prompt = userTextCopy;
@@ -522,7 +523,7 @@ function initDraft() {
     }
 
     draftBtn.disabled = true;
-    draftBtn.innerHTML = `<i class="pulse" data-lucide="loader-2"></i> Sentinel is drafting...`;
+    draftBtn.innerHTML = `<i class="pulse" data-lucide="loader-2"></i> <span class="typing-dots">Sentinel is drafting</span>`;
     lucide.createIcons();
     state.isScanning = true;
 
