@@ -109,11 +109,12 @@ export async function auditContractWithGemini31(documentText) {
       },
       signal: controller.signal,
       body: JSON.stringify({
-        model: 'mistral-large-latest',
+        model: 'mistral-small-latest', // Pivoted to confirmed working tier
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: safeText }
-        ]
+        ],
+        temperature: 0.1
       })
     });
 
